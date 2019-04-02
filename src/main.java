@@ -3,21 +3,30 @@ public class main {
 
 
     public static void main(String[] args) {
+        test();
+
+        byte [] blocks = new byte[3];
+
 
     }
 
 
-    public static void shiftRowsEncryption(byte [][] matrix){
+    public static void shiftRowsEncryption(byte [][] matrix, boolean isEncryption){
+
+        int counter = 1;
+        if (!isEncryption)
+            counter = 3;
 
         for (int i = 1; i < matrix.length; i++) {
-            byte [] shift = new byte [i];
+            byte [] shift = new byte [counter];
             int j = 0;
-            while (j < i){
+            while (j < counter){
                 shift[j] = matrix[i][j];
                 j++;
             }
+
             int k = 0;
-            for (; k < matrix.length - i; k++) {
+            for (; k < matrix.length - counter; k++) {
                 matrix[i][k] = matrix[i][j];
                 j++;
             }
@@ -27,6 +36,10 @@ public class main {
                 j++;
                 k++;
             }
+            if (!isEncryption)
+                counter--;
+            else
+                counter++;
 
         }
     }
@@ -46,7 +59,17 @@ public class main {
             }
             System.out.println("}");
         }
-        shiftRowsEncryption(matrix);
+        System.out.println("*****************");
+        shiftRowsEncryption(matrix,true);
+        printMatrix(matrix);
+        System.out.println("*****************");
+        shiftRowsEncryption(matrix,false);
+        printMatrix(matrix);
+
+    }
+
+
+    public static void printMatrix (byte [][]matrix){
         for (int i = 0; i < matrix.length; i++) {
             System.out.print("{");
             for (int j = 0; j < matrix.length; j++) {
