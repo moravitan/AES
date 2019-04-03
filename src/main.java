@@ -9,20 +9,20 @@ public class main {
     public static void main(String[] args) throws IOException {
 
         args = new String [7];
-/*        args [0] = "-e";
+        args [0] = "-d";
         args [1] = "-k";
-        args [2] = "C:\\Users\\איתן אביטן\\Downloads\\לימודים\\אבטחת מחשבים ורשתות תקשורת\\עבודות הגשה\\עבודה 1\\חלק ב\\AES3_test_files\\key_short";
+        args [2] = "C:\\Users\\איתן אביטן\\Downloads\\לימודים\\אבטחת מחשבים ורשתות תקשורת\\עבודות הגשה\\עבודה 1\\חלק ב\\AES3_test_files\\test_keys_short";
         args [3] = "-i";
-        args [4] = "C:\\Users\\איתן אביטן\\Downloads\\לימודים\\אבטחת מחשבים ורשתות תקשורת\\עבודות הגשה\\עבודה 1\\חלק ב\\AES3_test_files\\message_short";
-        args [5] = "-o";
-        args [6] = "C:\\Users\\איתן אביטן\\Downloads\\לימודים\\אבטחת מחשבים ורשתות תקשורת\\עבודות הגשה\\עבודה 1\\חלק ב\\AES3_test_files\\test";*/
-        args [0] = "-b";
-        args [1] = "-m";
-        args [2] = "C:\\Users\\איתן אביטן\\Downloads\\לימודים\\אבטחת מחשבים ורשתות תקשורת\\עבודות הגשה\\עבודה 1\\חלק ב\\AES3_test_files\\message_short";
-        args [3] = "-c";
         args [4] = "C:\\Users\\איתן אביטן\\Downloads\\לימודים\\אבטחת מחשבים ורשתות תקשורת\\עבודות הגשה\\עבודה 1\\חלק ב\\AES3_test_files\\cipher_short";
         args [5] = "-o";
-        args [6] = "C:\\Users\\איתן אביטן\\Downloads\\לימודים\\אבטחת מחשבים ורשתות תקשורת\\עבודות הגשה\\עבודה 1\\חלק ב\\AES3_test_files\\test";
+        args [6] = "C:\\Users\\איתן אביטן\\Downloads\\לימודים\\אבטחת מחשבים ורשתות תקשורת\\עבודות הגשה\\עבודה 1\\חלק ב\\AES3_test_files\\test_plaintextshort";
+/*        args [0] = "-b";
+        args [1] = "-m";
+        args [2] = "C:\\Users\\איתן אביטן\\Downloads\\לימודים\\אבטחת מחשבים ורשתות תקשורת\\עבודות הגשה\\עבודה 1\\חלק ב\\AES3_test_files\\message_long";
+        args [3] = "-c";
+        args [4] = "C:\\Users\\איתן אביטן\\Downloads\\לימודים\\אבטחת מחשבים ורשתות תקשורת\\עבודות הגשה\\עבודה 1\\חלק ב\\AES3_test_files\\cipher_long";
+        args [5] = "-o";
+        args [6] = "C:\\Users\\איתן אביטן\\Downloads\\לימודים\\אבטחת מחשבים ורשתות תקשורת\\עבודות הגשה\\עבודה 1\\חלק ב\\AES3_test_files\\test_keys_long";*/
 
         if (args[0] != "-b"){
             // get all the plaintext and split them into blocks
@@ -61,6 +61,10 @@ public class main {
 
             byte [][][] c1 = stepOne(allPlaintext,keys[0]);
             byte [][][] c2 = stepOne(c1,keys[1]);
+            for (int i = 0; i < c2.length; i++) {
+                shiftRows(c2[i],true);
+
+            }
             getThirdKey(c2,allCiphertext,keys);
             writeOutputToFile(keys,args[6]);
         }
@@ -68,9 +72,9 @@ public class main {
     }
 
     private static void check() throws IOException {
-        File file = new File("C:\\Users\\איתן אביטן\\Downloads\\לימודים\\אבטחת מחשבים ורשתות תקשורת\\עבודות הגשה\\עבודה 1\\חלק ב\\AES3_test_files\\test");
+        File file = new File("C:\\Users\\איתן אביטן\\Downloads\\לימודים\\אבטחת מחשבים ורשתות תקשורת\\עבודות הגשה\\עבודה 1\\חלק ב\\AES3_test_files\\test_plaintextshort");
         byte[] result = Files.readAllBytes(file.toPath());
-        file = new File("C:\\Users\\איתן אביטן\\Downloads\\לימודים\\אבטחת מחשבים ורשתות תקשורת\\עבודות הגשה\\עבודה 1\\חלק ב\\AES3_test_files\\cipher_short");
+        file = new File("C:\\Users\\איתן אביטן\\Downloads\\לימודים\\אבטחת מחשבים ורשתות תקשורת\\עבודות הגשה\\עבודה 1\\חלק ב\\AES3_test_files\\message_short");
         byte[] ciphetext = Files.readAllBytes(file.toPath());
         for (int i = 0; i < result.length; i++) {
             if (result[i] != ciphetext[i]) {
@@ -83,13 +87,13 @@ public class main {
     }
 
     private static void getThirdKey(byte[][][] c2, byte[][][] allCiphertext, byte[][][] keys) {
-        for (int i = 0; i < c2.length; i++) {
+        //for (int i = 0; i < c2.length; i++) {
             for (int j = 0; j < 4; j++) {
                 for (int k = 0; k < 4; k++) {
-                    keys[2][j][k] = (byte) (c2[i][j][k] ^ allCiphertext[i][j][k]);
+                    keys[2][j][k] = (byte) (c2[0][j][k] ^ allCiphertext[0][j][k]);
                 }
             }
-        }
+        //}
     }
 
     /**
